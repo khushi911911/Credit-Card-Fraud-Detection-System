@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 import joblib
 from pathlib import Path
-from tensorflow.keras.models import load_model
 
 st.set_page_config(
     page_title="Credit Card Fraud Detection",
@@ -50,7 +49,14 @@ def load_artifacts():
     ann_model = None
     if ANN_MODEL_PATH.exists():
         try:
+            import importlib
+
+            tensorflow = importlib.import_module("tensorflow")
+            from tensorflow.keras.models import load_model
+
             ann_model = load_model(ANN_MODEL_PATH)
+        except ModuleNotFoundError:
+            ann_model = None
         except Exception:
             ann_model = None
 
